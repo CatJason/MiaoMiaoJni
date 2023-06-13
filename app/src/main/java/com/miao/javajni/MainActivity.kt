@@ -4,28 +4,27 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
-
 class MainActivity : AppCompatActivity() {
     companion object {
-        // 加载本地库
+        // 加载动态库
         init {
             System.loadLibrary("native-lib")
         }
     }
 
-    // 声明本地方法
-    private val nativeString: String
-        external get
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // 调用本地方法
-        val nativeString = nativeString
+        // 调用 JNI 函数
+        val messageFromJNI = stringFromJNI()
 
-        // 将本地方法返回的字符串显示在TextView上
+        // 将 JNI 返回的字符串显示在 TextView 中
         val textView = findViewById<TextView>(R.id.textView)
-        textView.text = nativeString
+        textView.text = messageFromJNI
     }
+
+    // JNI 函数声明
+    private external fun stringFromJNI(): String
 }
+
